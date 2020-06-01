@@ -32,24 +32,21 @@ void draw() {
     String selected = "";
     for (int j=0; j<W; j++) {
       if (j<=0+P/2 || j>=W-P/2) { 
-        for(int k=0; k<0+P/2; k++){
-          if(k==j){
-            for(int l=0; l<P/2-k; l++)selected += "0";
-            for(int l=0-k; l<P/2; l++)selected += bToS(data[i-1][j+l]);
+        for (int k=0; k<0+P/2; k++) {
+          if (k==j) {
+            for (int l=0; l<P/2-k; l++)selected += "0";
+            for (int l=0-k; l<P/2; l++)selected += bToS(data[i-1][j+l]);
           }
         }
-        for(int k=W-P/2; k<W; k++){
-          if(k==j){
-            for(int l=0; l<k-W; l++)selected += bToS(data[i-1][j+l]); // error
-            for(int l=0; l<P/2-k; l++)selected += "0";                // error
+        for (int k=W-P/2; k<W; k++) {
+          if (k==j) {
+            for (int l=-(P/2); l<W-k; l++)selected += bToS(data[i-1][j+l]);
+            for (int l=0; l<P/2-W+k+1; l++)selected += "0";
           }
         }
-        //if (j==0) selected = "00" + bToS(data[i-1][j]) + bToS(data[i-1][j+1]) + bToS(data[i-1][j+2]);
-        //if (j==1) selected = "0" + bToS(data[i-1][j-1]) + bToS(data[i-1][j]) + bToS(data[i-1][j+1]) + bToS(data[i-1][j+2]);
-        if (j==999) selected = bToS(data[i-1][j-2]) + bToS(data[i-1][j-1]) + bToS(data[i-1][j]) + bToS(data[i-1][j+1]) + "0";
-        if (j==1000) selected = bToS(data[i-1][j-2]) + bToS(data[i-1][j-1]) + bToS(data[i-1][j]) + "00";
       } else {
-        selected = "" + bToS(data[i-1][j-2]) + bToS(data[i-1][j-1]) + bToS(data[i-1][j]) + bToS(data[i-1][j+1]) + bToS(data[i-1][j+2]);
+        selected = "";
+        for (int k=-(P/2); k<=P/2; k++)selected += bToS(data[i-1][j+k]);
       }
       for (int k=0; k<C; k++) {
         if (selected.equals(ref[k]))data[i][j]=curr[k];
