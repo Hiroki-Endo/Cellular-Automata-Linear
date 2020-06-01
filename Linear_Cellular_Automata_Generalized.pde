@@ -1,16 +1,19 @@
 import java.lang.*;
 import java.util.*;
+import java.math.*;
 
+final BigInteger BASETWO = new BigInteger("2");
 final int H = 400;
 final int W = 1001;
-final int P = 5;
+final int P = 7;
 final int C = (int)pow(2, P);
+final BigInteger E = BASETWO.pow(C);
 
 boolean[][] data = new boolean[H][W];
 String[] ref = new String[C];
 boolean[] curr = new boolean[C];
-long now = 0;
-float r = random(2147483647);
+BigInteger now;
+String temp = "";
 
 void setup() {
   size(1001, 400);
@@ -24,8 +27,7 @@ void draw() {
   stroke(255);
   rect(W/2, 0, 1, 1);
   stroke(255);
-  r = random(2147483647);
-  now=(long)(map(r, 0, 2147483647, 0, pow(2, C)));
+  now = nextRandomBigInteger(E);
   startCurr(now);
 
   for (int i=1; i<H; i++) {
@@ -60,7 +62,6 @@ void draw() {
   //saveFrame(""+"5_"+String.valueOf(now)+".png");
 }
 
-
 public void startRef() {
   for (int i=0; i<C; i++) {
     String temp = "";
@@ -70,10 +71,10 @@ public void startRef() {
   }
 }
 
-public void startCurr(long in) {
-  String temp = "";
+public void startCurr(BigInteger in) {
   curr = new boolean[C];
-  temp=Long.toBinaryString(in);
+  temp="";
+  print2Binaryform(in);
   while (temp.length()<C)temp="0"+temp;
   for (int i=0; i<C; i++) {
     if (temp.substring(i, i+1).equals("1"))curr[i]=true;
@@ -86,4 +87,24 @@ public String bToS(boolean in) {
   } else {
     return("0");
   }
+}
+
+public BigInteger nextRandomBigInteger(BigInteger n) {
+  Random rand = new Random();
+  BigInteger result = new BigInteger(n.bitLength(), rand);
+  while ( result.compareTo(n) >= 0 ) {
+    result = new BigInteger(n.bitLength(), rand);
+  }
+  return result;
+}
+
+public void print2Binaryform(BigInteger in) {
+  BigInteger result;
+  if (in.compareTo(BigInteger.ONE)<=0) {
+    temp+=in;
+    return;
+  }
+  result = in.mod(new BigInteger(""+2));
+  print2Binaryform(new BigInteger(""+in.divide(new BigInteger("2"))));
+  temp+=result;
 }
